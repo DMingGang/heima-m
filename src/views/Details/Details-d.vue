@@ -1,6 +1,6 @@
 <template>
   <div>
-HomeHomeHome
+    <p>我是第{{ $route.params.id }}</p>
   </div>
 </template>
 

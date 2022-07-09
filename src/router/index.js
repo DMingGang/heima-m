@@ -1,27 +1,43 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import layout from '@/views/layout/layout-l.vue'
 Vue.use(VueRouter)
 
 const routes = [{
   path: '/',
-  redirect: '@/views/home-v'
+  redirect: '/home',
+  component: layout
 },
 {
-  path: '/home-v',
-  component: () => import('@/views/home-v')
+  path: '/layout',
+  component: layout,
+  children: [
+    {
+      path: '/home',
+      component: () => import('@/views/home/home-v')
+    },
+    {
+      path: '/my-v',
+      component: () => import('@/views/my/my-v')
+    },
+    {
+      path: '/qa-v',
+      component: () => import('@/views/qa/qa-v')
+    },
+    {
+      path: '/video-v',
+      component: () => import('@/views/video/video-v')
+    }
+  ]
+},
+
+{
+  path: '/search',
+  component: () => import('@/views/search/search-s')
 },
 {
-  path: '/my-v',
-  component: () => import('@/views/my-v')
-},
-{
-  path: '/qa-v',
-  component: () => import('@/views/qa-v')
-},
-{
-  path: '/video-v',
-  component: () => import('@/views/video-v')
+  path: '/Details-d/:id',
+  component: () => import('@/views/Details/Details-d')
 }
 ]
 
