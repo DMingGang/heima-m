@@ -24,23 +24,34 @@
         </van-tab>
       </van-tabs>
 
-      <div class="hamburger-btn">
+      <div class="hamburger-btn" @click="showchannel">
         <i class="toutiao toutiao-gengduo"></i>
       </div>
     </div>
+    <van-popup
+  v-model="show"
+  closeable
+  close-icon-position="top-left"
+  position="bottom"
+  :style="{ height: '100%' }"
+> <channel :list='tuijian' :tabindex = 'tabindex' @redindex="redindex" v-if="redindex" @delindex = 'delindex' @addbtn='addbtn'></channel>
+</van-popup>
   </div>
 </template>
 <script>
 import Homelist from './home-list.vue'
 import { tuijianAPI } from '@/api/index'
+import channel from './home-channel.vue'
 export default {
   components: {
-    Homelist
+    Homelist,
+    channel
   },
   data () {
     return {
       tuijian: [],
-      tabindex: 0
+      tabindex: 0,
+      show: false
     }
   },
   created () {
@@ -48,17 +59,54 @@ export default {
   },
   methods: {
     async tuijianAPIS() {
-      const res = await tuijianAPI()
-      // console.log(res.channels);
-      this.tuijian = res.channels
+      if (this.$store.token) {
+        console.log(123);
+      } else {
+        if (JSON.parse(localStorage.getItem('addhis'))) {
+          this.tuijian = JSON.parse(localStorage.getItem('addhis'))
+        } else {
+          const res = await tuijianAPI()
+          // console.log(res.channels);
+          this.tuijian = res.channels
+        }
+      }
     },
     searchbtn() {
       this.$router.push('/search')
+    },
+    showchannel() {
+      this.show = true
+    },
+    redindex(val) {
+      this.tabindex = val
+      this.show = false
+    },
+    delindex(index) {
+      if (this.$store.token) {
+        console.log(1);
+      } else {
+        this.tuijian.splice(index, 1)
+      }
+    },
+    addbtn(item) {
+      if (this.$store.token) {
+        console.log(1)
+      } else {
+        this.tuijian.push(item)
+      }
     }
   },
   computed: {
     getChannelId() {
       return this.tuijian[this.tabindex].id
+    }
+  },
+  watch: {
+    tuijian: {
+      handler() {
+        localStorage.setItem('addhis', JSON.stringify(this.tuijian))
+      },
+      deep: true
     }
   }
 }

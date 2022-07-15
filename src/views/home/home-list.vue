@@ -56,7 +56,7 @@ export default {
       if (this.isfirst) {
         this.list = results
         this.isfirst = false
-        console.log(this.list);
+        // console.log(this.list);
       } else {
         this.list.push(...results)
       }

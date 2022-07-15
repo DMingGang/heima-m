@@ -17,10 +17,7 @@
 
 <script>
 export default {
-  props: ['data'],
-  created () {
-    console.log(this.data);
-  }
+  props: ['data']
 }
 
 </script>

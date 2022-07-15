@@ -23,7 +23,7 @@ export default {
   methods: {
     async getsuglist(val) {
       const res = await sugAPI(val)
-      console.log(res.options);
+      // console.log(res.options);
       this.list = res.options
     },
     changecolor(item) {
@@ -31,7 +31,7 @@ export default {
       return item.replaceAll(this.val, `<span class='active'>${this.val}</span>`)
     },
     resbtn(val) {
-      console.log(123);
+      // console.log(123);
       this.$emit('click', val)
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
      <van-search
     v-model="value"
     show-action
@@ -8,9 +8,11 @@
     @cancel="onCancel"
     background="#5094f3"
   />
-  <history v-if="iswhat === 'his'"></history>
+  <div class="box">
+  <history v-if="iswhat === 'his'" @search = 'search'></history>
   <suggest :val='value' v-else-if="iswhat === 'sug'" @click="getres"></suggest>
-  <result v-else></result>
+  <result v-else :val='value' ></result>
+  </div>
   </div>
 </template>
 
@@ -34,6 +36,12 @@ export default {
     };
   },
   methods: {
+    search(val) {
+      setTimeout(() => {
+        this.iswhat = this.res
+      }, 0)
+      this.value = val
+    },
     onSearch() {
       this.iswhat = this.res
     },
@@ -41,7 +49,7 @@ export default {
       this.$router.push('/home')
     },
     getres(val) {
-      console.log(val);
+      // console.log(val);
       this.value = val
       setTimeout(() => {
         this.iswhat = this.res
@@ -65,5 +73,12 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .van-search__action{
   color:#fff
+}
+::v-deep .van-search{
+  position: fixed;
+  width: 100%;
+}
+.box{
+  padding-top: 60px;
 }
 </style>
