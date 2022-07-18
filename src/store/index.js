@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { loginAPI, logininfoAPI } from '@/api/index.js'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    SearchHistroy: JSON.parse(localStorage.getItem('searchhis')),
+    SearchHistroy: JSON.parse(localStorage.getItem('searchhis')) || [],
     ResultHis: [],
-    token: ''
+    token: JSON.parse(localStorage.getItem('mytoken')) || '',
+    userInfo: JSON.parse(localStorage.getItem('useInfo')) || {}
   },
   getters: {
   },
@@ -32,9 +33,33 @@ export default new Vuex.Store({
     },
     getResultHis(state, payload) {
       state.ResultHis = payload
+    },
+    settoken(state, newtoken) {
+      state.token = newtoken
+      localStorage.setItem('mytoken', JSON.stringify(newtoken))
+    },
+    useInfo(state, newuserInfo) {
+      state.userInfo = newuserInfo
+      localStorage.setItem('useInfo', JSON.stringify(newuserInfo))
+    },
+    signOut(state, payload) {
+      state.token = payload
+      localStorage.removeItem('mytoken')
     }
   },
   actions: {
+    async login(context, { mobile, code }) {
+      // console.log(context);
+      const { token } = await loginAPI(mobile, code)
+      // console.log(token);
+      context.commit('settoken', token)
+      context.dispatch('Infos')
+    },
+    async Infos(context) {
+      const res = await logininfoAPI()
+      // console.log(res);
+      context.commit('useInfo', res)
+    }
   },
   modules: {
   }

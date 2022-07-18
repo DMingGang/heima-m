@@ -6,7 +6,7 @@
   <van-tabbar-item to='/home' class="iconfont icon-shouye" replace> <i>首页</i> </van-tabbar-item>
   <van-tabbar-item to='/my-v' class="iconfont icon-wenda" replace><i>问答</i></van-tabbar-item>
   <van-tabbar-item to='/qa-v' replace class="iconfont icon-shipin"><i>视频</i></van-tabbar-item>
-  <van-tabbar-item to='/video-v' replace class="iconfont icon-wode"><i>未登录</i></van-tabbar-item>
+  <van-tabbar-item to='/video-v' replace class="iconfont icon-wode"><i>{{login}}</i></van-tabbar-item>
   <!-- <van-icon name="manager-o" /> -->
 </van-tabbar>
   </div>
@@ -16,7 +16,8 @@
 export default {
   data() {
     return {
-      active: 0
+      active: 0,
+      login: this.$store.state.token ? '我的' : '未登录'
     };
   }
 }

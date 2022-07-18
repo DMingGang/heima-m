@@ -40,7 +40,7 @@
 </template>
 <script>
 import Homelist from './home-list.vue'
-import { tuijianAPI } from '@/api/index'
+import { tuijianAPI, userchannelAPI } from '@/api/index'
 import channel from './home-channel.vue'
 export default {
   components: {
@@ -59,8 +59,10 @@ export default {
   },
   methods: {
     async tuijianAPIS() {
-      if (this.$store.token) {
-        console.log(123);
+      if (this.$store.state.token) {
+        const res = await tuijianAPI()
+        // console.log(res.channels);
+        this.tuijian = res.channels
       } else {
         if (JSON.parse(localStorage.getItem('addhis'))) {
           this.tuijian = JSON.parse(localStorage.getItem('addhis'))
@@ -81,18 +83,16 @@ export default {
       this.tabindex = val
       this.show = false
     },
-    delindex(index) {
-      if (this.$store.token) {
-        console.log(1);
-      } else {
-        this.tuijian.splice(index, 1)
+    async delindex(index) {
+      this.tuijian.splice(index, 1)
+      if (this.$store.state.token) {
+        await userchannelAPI(this.tuijian)
       }
     },
-    addbtn(item) {
-      if (this.$store.token) {
-        console.log(1)
-      } else {
-        this.tuijian.push(item)
+    async addbtn(item) {
+      this.tuijian.push(item)
+      if (this.$store.state.token) {
+        await userchannelAPI(this.tuijian)
       }
     }
   },
