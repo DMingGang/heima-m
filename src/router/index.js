@@ -40,6 +40,10 @@ const routes = [{
   component: () => import('@/views/Details/Details-d')
 },
 {
+  path: '/alluser',
+  component: () => import('@/views/video/alluser-a')
+},
+{
   path: '/login',
   component: () => import('@/views/login/login-l.vue')
 }

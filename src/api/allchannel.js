@@ -14,3 +14,17 @@ export const userchannel = (channels) => {
     }
   })
 }
+// 修改文章
+export const Patchchannel = ({ name, gender, birthday, realName, intro }) => {
+  return request({
+    url: '/v1_0/user/profile',
+    method: 'PATCH',
+    data: {
+      name,
+      gender,
+      birthday,
+      real_name: realName,
+      intro
+    }
+  })
+}

@@ -9,7 +9,7 @@
         <img class="avatar" :src="$store.state.userInfo.photo" alt="" />
         <span class="name">{{ $store.state.userInfo.name }}</span>
       </div>
-      <van-button class="right" round type="info">编辑资料</van-button>
+      <van-button class="right" round type="info" @click="$router.push('/alluser')">编辑资料</van-button>
     </div>
 
     <van-button v-if="$store.state.token" type="danger" size="large"

@@ -30,3 +30,11 @@ export const delartical = (target) => {
     method: 'DELETE'
   })
 }
+// 修改用户头像
+export const putava = (data) => {
+  return request({
+    url: '/v1_0/user/photo',
+    method: 'PATCH',
+    data
+  })
+}

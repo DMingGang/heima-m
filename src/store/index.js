@@ -11,6 +11,9 @@ export default new Vuex.Store({
     userInfo: JSON.parse(localStorage.getItem('useInfo')) || {}
   },
   getters: {
+    gender(state) {
+      return state.userInfo.gender === 0 ? '男' : '女'
+    }
   },
   mutations: {
     changehis(state, payload) {

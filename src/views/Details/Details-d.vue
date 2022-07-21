@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <van-nav-bar
   title="黑马头条"
   left-arrow
@@ -22,18 +22,22 @@
     </div>
      <div class="texts markdown-body" v-html="userartical.content"></div>
       <div class="body-end">------------- 正文结束 -------------</div>
+      <Comment @replycomment='onreplycomment' :addcoment='addcom' :artId = 'this.$route.params.id'></Comment>
   </div>
   <div class="article-bottom">
       <div class="commit">
-        <div>写评论</div>
+        <div @click="isShowcommit = true">写评论</div>
       </div>
 
-      <van-icon class="icon chat" name="chat-o" badge="9" />
+      <van-icon class="icon chat" name="chat-o" :badge="userartical.comm_count" />
 
       <van-icon class="icon star" name="star" />
 
       <van-icon class="icon goods" name="good-job" />
     </div>
+    <!-- // 弹出层 -->
+    <commit v-if="userartical.art_id" v-model="isShowcommit" :target='userartical.art_id' @addcomment="addcom = $event" />
+    <reply :selectcomment='selectcomment' v-model="isShowreply"></reply>
   </div>
 
 </template>
@@ -41,25 +45,40 @@
 <script>
 import { getuserarticalAPI } from '@/api/index.js'
 import follow from '@/views/follow/follow-f.vue'
+import Comment from '@/views/Details/Comment-c.vue'
+import commit from './commit-c.vue'
+import reply from './reply-r.vue'
 export default {
   components: {
-    follow
+    follow,
+    Comment,
+    commit,
+    reply
   },
   data () {
     return {
-      userartical: []
+      userartical: [],
+      isShowcommit: false,
+      addcom: null,
+      isShowreply: false,
+      selectcomment: {}
     }
   },
   created () {
     this.getuserartical()
   },
   methods: {
+    onreplycomment(data) {
+      this.isShowreply = true
+      this.selectcomment = data
+      // console.log(this.selectcomment);
+    },
     onClickLeft() {
       this.$router.back()
     },
     async getuserartical() {
       const res = await getuserarticalAPI(this.$route.params.id)
-      console.log(res);
+      // console.log(res);
       this.userartical = res
     }
   }
@@ -67,11 +86,14 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.main{
+  padding-bottom: 50px;
+}
 .body-end{
   font-size: 16px;
   text-align: center;
   color:#ccc;
-  margin: 35px 0px 95px 0;
+  margin: 35px 0px 35px 0;
 }
 .tit span{
   font-size: 12px;
